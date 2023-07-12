@@ -1,0 +1,209 @@
+#include QMK_KEYBOARD_H
+#include "raw_hid.h"
+#define HIDSIZE 32
+
+enum layers {
+    // real layers
+    _QWERTY,
+    _NUMB,
+    _NAV,
+    _GAMING,
+    _GAMING_SHIFT,
+
+    // fake layers
+    _WINNUMB
+};
+
+enum custom_keycodes {
+    NUMB = SAFE_RANGE,
+};
+
+// Defined keys
+#define D_QWER TO(_QWERTY)
+#define D_Gaming TO(_GAMING)
+#define D_GmShft TG(_GAMING_SHIFT)
+#define D_Num NUMB
+
+#define D_QuoNav LT(_NAV, KC_QUOT)
+#define D_TabNav LT(_NAV, KC_TAB)
+#define D_WNumB LT(_WINNUMB, KC_B)
+#define D_WNumN LT(_WINNUMB, KC_N)
+
+#define D_ZSft LSFT_T(KC_Z)
+#define D_XCtl LCTL_T(KC_X)
+#define D_CAlt LALT_T(KC_C)
+#define D_VGui LGUI_T(KC_V)
+#define D_MGui LGUI_T(KC_M)
+#define D_ComAlt LALT_T(KC_COMM)
+#define D_DotCtl LCTL_T(KC_DOT)
+#define D_SlsSft LSFT_T(KC_SLSH)
+#define D_SpcAlt RALT_T(KC_SPC)
+
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        case KC_SCLN:
+        case KC_A ... KC_O:
+        case KC_Q ... KC_Z:
+        case KC_MINS:
+            add_weak_mods(MOD_BIT(KC_LSFT));
+            return true;
+
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+            return true;
+
+        default:
+            return false;
+    }
+}
+
+const key_override_t backspace_delete_override = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, KC_DEL);
+
+const key_override_t **key_overrides = (const key_override_t *[]) {
+    &backspace_delete_override,
+    NULL
+};
+
+void quick_hid(uint8_t val) {
+    uint8_t content[HIDSIZE];
+    for (uint8_t i = 0; i < HIDSIZE; i++) {
+        content[i] = 0;
+    }
+    content[0] = val;
+    raw_hid_send(content, HIDSIZE);
+}
+
+void raw_hid_receive(uint8_t* content, uint8_t len) {
+    uint8_t arg = content[0];
+
+    switch (arg) {
+        case 0:
+            layer_move(_QWERTY);
+            break;
+        case 1:
+            layer_move(_GAMING);
+            break;
+        default:
+    }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint8_t numbHeld = 0;
+    switch (keycode) {
+        case NUMB:
+            if (record->event.pressed) {
+                numbHeld++;
+                if (numbHeld == 1) {
+                    layer_on(_NUMB);
+                } else if (numbHeld == 2) {
+                    caps_word_toggle();
+                }
+            } else {
+                numbHeld--;
+                if (numbHeld == 0) {
+                    layer_off(_NUMB);
+                }
+            }
+            return false;
+        default: return true;
+    }
+}
+
+#define LAYER_DOWN(state1, state2, layer) (IS_LAYER_OFF_STATE(state1, layer) && IS_LAYER_ON_STATE(state2, layer))
+#define LAYER_UP(state1, state2, layer) (IS_LAYER_ON_STATE(state1, layer) && IS_LAYER_OFF_STATE(state2, layer))
+#define LAYER_SET(state, layer) (state | ((layer_state_t) 1 << layer))
+#define LAYER_UNSET(state, layer) (state & ~((layer_state_t) 1 << layer))
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    static layer_state_t lastState = 0;
+
+    if (LAYER_DOWN(lastState, state, _WINNUMB)) {
+        state = LAYER_SET(state, _NUMB);
+        add_mods(MOD_MASK_GUI);
+    }
+
+    if (LAYER_UP(lastState, state, _WINNUMB)) {
+        state = LAYER_UNSET(state, _NUMB);
+        del_mods(MOD_MASK_GUI);
+    }
+
+    quick_hid(state);
+
+    lastState = state;
+    return state;
+}
+
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+  [_QWERTY] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_GRV  ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                                            KC_6    ,KC_7    ,KC_8    ,KC_9    ,KC_0    ,KC_BSLS ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     D_TabNav,KC_Q    ,KC_W    ,KC_E    ,KC_R    ,KC_T    ,KC_VOLD ,                          KC_VOLU ,KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,D_QuoNav,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     D_Num   ,KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,KC_EQL  ,                          KC_UNDS ,KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,D_Num   ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,XXXXXXX ,D_Gaming,        XXXXXXX ,XXXXXXX ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     KC_LCTL ,KC_MPRV ,KC_MPLY ,KC_MNXT ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        XXXXXXX ,KC_ENT  ,    D_SpcAlt,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_NUMB] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_F1   ,KC_F2   ,KC_F3   ,KC_F4   ,KC_F5   ,KC_F6   ,                                            KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,KC_F11  ,KC_F12  ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,KC_LCBR ,KC_AMPR ,KC_LABK ,KC_RABK ,KC_RCBR ,KC_TILD ,                          _______ ,KC_SLSH ,KC_7    ,KC_8    ,KC_9    ,KC_ASTR ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,KC_LPRN ,KC_DLR  ,KC_PERC ,KC_CIRC ,KC_RPRN ,KC_GRV  ,                          _______ ,KC_EQL  ,KC_4    ,KC_5    ,KC_6    ,KC_0    ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,KC_LBRC ,KC_EXLM ,KC_AT   ,KC_HASH ,KC_RBRC ,_______ ,_______ ,        _______ ,_______ ,KC_PIPE ,KC_1    ,KC_2    ,KC_3    ,KC_BSLS ,_______ ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     _______ ,_______ ,_______ ,KC_MINS ,     _______ ,    KC_PLUS ,_______ ,        _______ ,KC_PLUS ,    _______ ,     KC_MINS ,_______ ,_______ ,_______
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_NAV] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,XXXXXXX ,KC_MS_U ,XXXXXXX ,KC_WH_U ,XXXXXXX ,_______ ,                          _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_WH_D ,XXXXXXX ,_______ ,                          _______ ,KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RIGHT,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     QK_RBT  ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,_______ ,_______ ,        _______ ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     QK_BOOT ,XXXXXXX ,XXXXXXX ,XXXXXXX ,     KC_BTN1 ,    KC_BTN2 ,_______ ,        _______ ,_______ ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_GAMING] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_GRV  ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                                            D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_TAB  ,KC_Q    ,KC_W    ,KC_E    ,KC_R    ,KC_T    ,KC_Y    ,                          D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_N    ,KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,KC_H    ,                          D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_M    ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,KC_J    ,D_QWER  ,        D_GmShft,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,D_QWER  ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     KC_U    ,KC_I    ,KC_O    ,KC_P    ,     KC_SPC  ,    KC_K    ,KC_L    ,        D_QWER  ,D_QWER  ,    D_QWER  ,     D_QWER  ,D_QWER  ,D_QWER  ,D_QWER
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_GAMING_SHIFT] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,                                            _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_LSFT ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,        _______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     KC_LCTL ,KC_LALT ,_______ ,KC_LCTL ,     _______ ,    _______ ,_______ ,        _______ ,_______ ,    _______ ,     _______ ,_______ ,_______ ,_______
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  )
+};
