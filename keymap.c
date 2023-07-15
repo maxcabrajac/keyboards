@@ -5,6 +5,7 @@
 enum layers {
     // real layers
     _QWERTY,
+    _COLEMAK,
     _NUMB,
     _NAV,
     _GAMING,
@@ -20,6 +21,7 @@ enum custom_keycodes {
 
 // Defined keys
 #define D_QWER TO(_QWERTY)
+#define D_Clmk TO(_COLEMAK)
 #define D_Gaming TO(_GAMING)
 #define D_GmShft TG(_GAMING_SHIFT)
 #define D_Num NUMB
@@ -28,6 +30,7 @@ enum custom_keycodes {
 #define D_TabNav LT(_NAV, KC_TAB)
 #define D_WNumB LT(_WINNUMB, KC_B)
 #define D_WNumN LT(_WINNUMB, KC_N)
+#define D_CWNumK LT(_WINNUMB, KC_K)
 
 #define D_ZSft LSFT_T(KC_Z)
 #define D_XCtl LCTL_T(KC_X)
@@ -145,7 +148,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      D_Num   ,KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,KC_EQL  ,                          KC_UNDS ,KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,D_Num   ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,XXXXXXX ,D_Gaming,        XXXXXXX ,XXXXXXX ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,XXXXXXX ,
+     XXXXXXX ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,D_Clmk  ,D_Gaming,        XXXXXXX ,XXXXXXX ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,XXXXXXX ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+     KC_LCTL ,KC_MPRV ,KC_MPLY ,KC_MNXT ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        XXXXXXX ,KC_ENT  ,    D_SpcAlt,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
+  [_COLEMAK] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_GRV  ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                                            KC_6    ,KC_7    ,KC_8    ,KC_9    ,KC_0    ,KC_BSLS ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     D_TabNav,KC_Q    ,KC_W    ,KC_F    ,KC_P    ,KC_G    ,KC_VOLD ,                          KC_VOLU ,KC_J    ,KC_L    ,KC_U    ,KC_Y    ,KC_SCLN ,D_QuoNav,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     D_Num   ,KC_A    ,KC_R    ,KC_S    ,KC_T    ,KC_D    ,KC_EQL  ,                          KC_UNDS ,KC_H    ,KC_N    ,KC_E    ,KC_I    ,KC_O    ,D_Num   ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     XXXXXXX ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,D_QWER  ,D_Gaming,        XXXXXXX ,XXXXXXX ,D_CWNumK,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      KC_LCTL ,KC_MPRV ,KC_MPLY ,KC_MNXT ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        XXXXXXX ,KC_ENT  ,    D_SpcAlt,     KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RGHT
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
