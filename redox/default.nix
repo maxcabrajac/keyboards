@@ -27,7 +27,7 @@
 			USB=`comm -13 $TMP1 $TMP2 | ${lib.getExe gnugrep} -o '/dev/tty.*'`
 			mv $TMP2 $TMP1
 		done; echo ""
-		rm $TMP1 $TMP2
+		rm $TMP1
 
 		echo "Device $USB has appeared; assuming it is the controller."
 		printf "Waiting for $USB to become writable."
