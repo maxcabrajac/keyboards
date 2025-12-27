@@ -17,13 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-// #define ESQ
-#ifdef ESQ
-#   define SPLIT_USB_DETECT
-#   define SPLIT_USB_TIMEOUT 500
-#endif
+#define SPLIT_USB_DETECT
+#define SPLIT_USB_TIMEOUT 500
+#define MASTER_LEFT
 
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD
 
-#define MASTER_LEFT
