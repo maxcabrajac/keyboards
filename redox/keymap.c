@@ -112,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
 	D_Nav   ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,D_Clmk  ,D_Gaming,        XXXXXXX ,XXXXXXX ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,D_Nav   ,
 //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-	KC_MPLY ,KC_MPRV ,KC_MNXT ,KC_TAB  ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        KC_F13  ,KC_ENT  ,    D_SpcAlt,     KC_UNDS  ,_______ ,_______ ,_______
+	KC_MPLY ,KC_MPRV ,KC_MNXT ,KC_TAB  ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        KC_F13  ,KC_ENT  ,    D_SpcAlt,     KC_UNDS ,_______ ,_______ ,_______
 //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
