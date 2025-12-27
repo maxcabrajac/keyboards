@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #define SPLIT_USB_DETECT
-#define SPLIT_USB_TIMEOUT 500
+#define SPLIT_USB_TIMEOUT 1000
 #define MASTER_LEFT
 
 #define TAPPING_TERM 200
