@@ -1,6 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "raw_hid.h"
-#define HIDSIZE 32
 
 enum layers {
 	//real layers
@@ -67,29 +65,6 @@ const key_override_t backspace_delete_override = ko_make_basic(MOD_MASK_CTRL, KC
 const key_override_t *key_overrides[] = {
 	&backspace_delete_override,
 };
-
-void quick_hid(uint8_t val) {
-	uint8_t content[HIDSIZE];
-	for (uint8_t i = 0; i < HIDSIZE; i++) {
-		content[i] = 0;
-	}
-	content[0] = val;
-	raw_hid_send(content, HIDSIZE);
-}
-
-void raw_hid_receive(uint8_t* content, uint8_t len) {
-	uint8_t arg = content[0];
-
-	switch (arg) {
-		case 0:
-			layer_move(_QWERTY);
-			break;
-		case 1:
-			layer_move(_GAMING);
-			break;
-		default:
-	}
-}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	static uint8_t numbHeld = 0;
