@@ -27,9 +27,10 @@ enum custom_keycodes {
 #define D_Num NUMB
 #define D_Nav MO(_NAV)
 
-#define D_WNumB LT(_WINNUMB, KC_B)
-#define D_WNumN LT(_WINNUMB, KC_N)
-#define D_CWNumK LT(_WINNUMB, KC_K)
+#define WNumb(kc) LT(_WINNUMB, kc)
+#define D_WNumB WNumb(KC_B)
+#define D_WNumN WNumb(KC_N)
+#define D_CWNumK WNumb(KC_K)
 
 #define D_ZSft LSFT_T(KC_Z)
 #define D_XCtl LCTL_T(KC_X)
@@ -108,32 +109,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 				}
 			}
 			return false;
+		case WNumb(0x00) ... WNumb(0xFF):
+			if (record->tap.count == 0) { // key held
+				if (record->event.pressed) {
+					register_mods(MOD_BIT(KC_LGUI));
+					layer_on(_NUMB);
+				} else {
+					layer_off(_NUMB);
+					unregister_mods(MOD_BIT(KC_LGUI));
+				}
+				return false; // skip layer handling
+			}
+			return true; // tap = send normal keycode
 		default: return true;
 	}
-}
-
-#define LAYER_DOWN(state1, state2, layer) (IS_LAYER_OFF_STATE(state1, layer) && IS_LAYER_ON_STATE(state2, layer))
-#define LAYER_UP(state1, state2, layer) (IS_LAYER_ON_STATE(state1, layer) && IS_LAYER_OFF_STATE(state2, layer))
-#define LAYER_SET(state, layer) (state | ((layer_state_t) 1 << layer))
-#define LAYER_UNSET(state, layer) (state & ~((layer_state_t) 1 << layer))
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-	static layer_state_t lastState = 0;
-
-	if (LAYER_DOWN(lastState, state, _WINNUMB)) {
-		state = LAYER_SET(state, _NUMB);
-		add_mods(MOD_MASK_GUI);
-	}
-
-	if (LAYER_UP(lastState, state, _WINNUMB)) {
-		state = LAYER_UNSET(state, _NUMB);
-		del_mods(MOD_MASK_GUI);
-	}
-
-	quick_hid(state);
-
-	lastState = state;
-	return state;
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
