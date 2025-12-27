@@ -44,8 +44,8 @@ enum custom_keycodes {
 
 bool caps_word_press_user(uint16_t keycode) {
 	switch (keycode) {
-		case KC_SCLN:
 		case KC_A ... KC_O:
+		case KC_SCLN: // colemak O
 		case KC_Q ... KC_Z:
 			add_weak_mods(MOD_BIT(KC_LSFT));
 			return true;
