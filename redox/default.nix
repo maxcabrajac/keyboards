@@ -6,7 +6,7 @@
 }: {
 	keyboard = "redox";
 	variant = "rev1";
-	src = ./.;
+	src = lib.sourceByRegex ./. [".*\.(h|c|mk)"];
 	flash = target: /* bash */ ''
 		list_devices() {
 			ls /dev/tty*
