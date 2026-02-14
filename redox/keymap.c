@@ -104,15 +104,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT(
 //┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
-	KC_GRV  ,KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                                            KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RIGHT,KC_0    ,KC_LNG1 ,
+	XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RIGHT,XXXXXXX ,XXXXXXX ,
 //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-	XXXXXXX ,KC_Q    ,KC_W    ,KC_E    ,KC_R    ,KC_T    ,KC_VOLD ,                          KC_VOLU ,KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,KC_QUOT ,
+	KC_GRV  ,KC_Q    ,KC_W    ,KC_E    ,KC_R    ,KC_T    ,KC_VOLD ,                          KC_VOLU ,KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,KC_QUOT ,
 //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-	D_Num   ,KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,KC_EQL  ,                          XXXXXXX ,KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,D_Num   ,
+	D_Num   ,KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,XXXXXXX ,                          XXXXXXX ,KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,D_Num   ,
 //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-	D_Nav   ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,D_Clmk  ,D_Gaming,        XXXXXXX ,XXXXXXX ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,D_Nav   ,
+	D_Nav   ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,D_Nav   ,
 //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-	KC_MPLY ,KC_MPRV ,KC_MNXT ,KC_TAB  ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        KC_F13  ,KC_ENT  ,    D_SpcAlt,     KC_UNDS ,_______ ,_______ ,_______
+	KC_MPLY ,KC_MPRV ,KC_MNXT ,KC_TAB  ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        XXXXXXX ,KC_ENT  ,    D_SpcAlt,     KC_UNDS ,XXXXXXX ,XXXXXXX ,XXXXXXX
 //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
