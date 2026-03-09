@@ -10,6 +10,7 @@ enum layers {
 	_NAV,
 	_GAMING,
 	_GAMING_REVCOLEMAK,
+	_SUDOKU,
 
 	//fake layers
 	_WINNUMB
@@ -26,6 +27,7 @@ enum custom_keycodes {
 // Layers
 #define D_Gaming TG(_GAMING)
 #define D_RevGam TG(_GAMING_REVCOLEMAK)
+#define D_Sudoku TG(_SUDOKU)
 #define D_Num NUMB
 #define D_Nav MO(_NAV)
 
@@ -45,6 +47,8 @@ enum custom_keycodes {
 #define D_DotCtl LCTL_T(KC_DOT)
 #define D_SlsSft LSFT_T(KC_SLSH)
 #define D_SpcAlt RALT_T(KC_SPC)
+
+#define D_CTLSFT LCTL(KC_LSFT)
 
 bool caps_word_press_user(uint16_t keycode) {
 	switch (keycode) {
@@ -116,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
 	D_Num   ,KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,XXXXXXX ,                          XXXXXXX ,KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN ,D_Num   ,
 //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-	D_Nav   ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,B_Clmk  ,D_RevGam,        XXXXXXX ,B_RClm  ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,D_Nav   ,
+	D_Nav   ,D_ZSft  ,D_XCtl  ,D_CAlt  ,D_VGui  ,D_WNumB ,B_Clmk  ,D_RevGam,        D_Sudoku,B_RClm  ,D_WNumN ,D_MGui  ,D_ComAlt,D_DotCtl,D_SlsSft,D_Nav   ,
 //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
 	KC_MPLY ,KC_MPRV ,KC_MNXT ,KC_TAB  ,     KC_BSPC ,    KC_ESC  ,XXXXXXX ,        XXXXXXX ,KC_ENT  ,    D_SpcAlt,     KC_UNDS ,XXXXXXX ,XXXXXXX ,XXXXXXX
 //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
@@ -206,4 +210,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
+  [_SUDOKU] = LAYOUT(
+//┌────────┬────────┬────────┬────────┬────────┬────────┐                                           ┌────────┬────────┬────────┬────────┬────────┬────────┐
+	XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                                            KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RIGHT,XXXXXXX ,XXXXXXX ,
+//├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+	XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,                          XXXXXXX ,XXXXXXX ,KC_7    ,KC_8    ,KC_9    ,XXXXXXX ,XXXXXXX ,
+//├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+	XXXXXXX ,XXXXXXX ,D_CTLSFT,KC_LSFT ,KC_LCTL ,XXXXXXX ,XXXXXXX ,                          XXXXXXX ,XXXXXXX ,KC_4    ,KC_5    ,KC_6    ,XXXXXXX ,XXXXXXX ,
+//├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+	XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,        D_Sudoku,XXXXXXX ,XXXXXXX ,KC_1    ,KC_2    ,KC_3    ,XXXXXXX ,XXXXXXX ,
+//├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+	XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX ,     XXXXXXX ,    XXXXXXX ,XXXXXXX ,        XXXXXXX ,XXXXXXX ,    XXXXXXX ,     XXXXXXX ,XXXXXXX ,XXXXXXX ,XXXXXXX
+//└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+  ),
+
 };
+
