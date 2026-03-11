@@ -25,11 +25,11 @@
         "qmk_firmware": "qmk_firmware"
       },
       "locked": {
-        "lastModified": 1771842111,
-        "narHash": "sha256-e8U1fco5J+5xHoA/vplkF/4vKnfKzl+1t2lU2uFpDuc=",
+        "lastModified": 1773130319,
+        "narHash": "sha256-r79LdJ1r+W1evuKZ0Ew02WOx24TdVf/5TS5UKb54UEw=",
         "owner": "agustinmista",
         "repo": "nixcaps",
-        "rev": "13451c7695c613ca1481f641afcf629d5f0a08e5",
+        "rev": "a0f71eae92b3374bf4195a2349a190d12452edac",
         "type": "github"
       },
       "original": {
