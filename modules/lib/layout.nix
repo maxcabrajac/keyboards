@@ -10,6 +10,20 @@
 in {
 	# TODO: test this code
 	_module.args.layout = rec {
+		Of = x: lib.types.submodule {
+			options = {
+				width = lib.mkOption {
+					type = lib.types.int;
+				};
+				height = lib.mkOption {
+					type = lib.types.int;
+				};
+				values = lib.mkOption {
+					type = lib.types.listOf x;
+				};
+			};
+		};
+
 		unit = x: {
 			width = 1;
 			height = 1;
