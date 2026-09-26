@@ -43,7 +43,7 @@ in {
 		};
 
 		matrix = x: x
-			|> map row
+			|> lib.map row
 			|> (r: lib.foldl stack null r);
 
 		stack = top: bottom: shortCircuitNulls top bottom <| assertSame "width" top bottom {
@@ -72,6 +72,15 @@ in {
 		};
 
 		overlay = mergeWith (o: u: if isNull o then u else o);
+
+		map = f: l: l // {
+			values = lib.imap0 (i: key: f rec {
+				inherit key;
+				inherit (l) width height;
+				row = i / width;
+				column = i - (row * width);
+			}) l.values;
+		};
 	};
 
 	imports = [({ layout, ... }: {
@@ -94,6 +103,11 @@ in {
 				[ 1 2 3 ]
 				[ 4 5 6 ]
 				[ 7 8 9 ]
+			];
+			map = layout.map (x: x) <| layout.matrix [
+				[ 1 2 ]
+				[ 1 2 ]
+				[ 1 2 ]
 			];
 		};
 	})];
