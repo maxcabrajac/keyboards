@@ -4,7 +4,7 @@
 in {
 	options = {
 		layouts = lib.mkOption {
-			type = t.attrsOf <| layout.Of key;
+			type = t.attrsOf <| t.anything;
 		};
 		keyboards = lib.mkOption {
 			type = t.attrsOf <| t.submodule {
