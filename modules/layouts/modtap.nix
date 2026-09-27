@@ -1,5 +1,5 @@
 { layout, lib, ... }: {
-	layouts = rec {
+	parts = rec {
 		modtap = layer: mod: key: let
 			mods = {
 				S = "MOD_LSFT";

@@ -11,7 +11,7 @@
 	};
 in {
 	options = {
-		layouts = lib.mkOption {
+		parts = lib.mkOption {
 			type = t.attrsOf <| t.anything;
 		};
 		keyboards = lib.mkOption {
@@ -23,5 +23,5 @@ in {
 		};
 	};
 
-	config.flake = { inherit (config) keyboards layouts; };
+	config.flake = { inherit (config) keyboards parts; };
 }
