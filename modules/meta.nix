@@ -33,16 +33,15 @@ in {
 
 					finalParts = lib.mkOption {
 						type = t.attrsOf <| layout.Of layeredKey;
-						# type = t.attrsOf <| t.anything;
 						readOnly = true;
 					};
 
 					layouter = lib.mkOption {
-						type = t.functionTo <| layout.Of layeredKey;
+						type = t.functionTo <| layout.Of <| t.nullOr layeredKey;
 					};
 
 					keymap = lib.mkOption {
-						type = layout.Of layeredKey;
+						type = layout.Of <| t.nullOr layeredKey;
 					};
 				};
 

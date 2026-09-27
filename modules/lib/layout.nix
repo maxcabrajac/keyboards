@@ -106,6 +106,19 @@ in {
 				column = i - (row * width);
 			}) l.values;
 		};
+
+		# FIX: Naming
+		splitHands = l:
+			{
+				left = lib.take;
+				right = lib.drop;
+			} |> lib.mapAttrs (_: f:
+				l
+				|> toNestedArray
+				|> lib.map (f (l.width / 2))
+				|> matrix
+			)
+		;
 	};
 
 	imports = [({ layout, ... }: {
