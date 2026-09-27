@@ -1,6 +1,14 @@
 { lib, layout, config, ... }: let
 	t = lib.types;
-	key = t.str;
+	key = t.submodule {
+		freeformType = t.attrsOf t.str;
+		options = {
+			_m = lib.mkOption {
+				type = t.deferredModuleWith {};
+				default = {};
+			};
+		};
+	};
 in {
 	options = {
 		layouts = lib.mkOption {

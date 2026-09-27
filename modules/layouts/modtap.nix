@@ -1,6 +1,6 @@
 { layout, lib, ... }: {
 	layouts = rec {
-		modtap = mod: key: let
+		modtap = layer: mod: key: let
 			mods = {
 				S = "MOD_LSFT";
 				C = "MOD_LCTL";
@@ -11,10 +11,10 @@
 		in
 			if isNull mod
 			then key
-			else "MT(${mods.${mod}}, ${key})"
+			else key // { ${layer} = "MT(${mods.${mod}}, ${key.${layer}})"; }
 		;
 
-		modtap_row = r: mods:
+		modtap_row = layer: r: mods:
 			layout.map ({ key, row, column, width, ... }:
 				 let
 					handIndex = lib.min column (width - column - 1);
@@ -25,7 +25,7 @@
 				in
 					if (row != r)
 					then key
-					else modtap mod key
+					else modtap layer mod key
 			)
 		;
 	};
