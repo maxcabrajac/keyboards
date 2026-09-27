@@ -1,6 +1,6 @@
-{ layout, lib, ... }: {
+{ layout, lib, helpers, ... }: {
 	parts = rec {
-		modtap = layer: mod: key: let
+		modtap = mod: key: let
 			mods = {
 				S = "MOD_LSFT";
 				C = "MOD_LCTL";
@@ -11,7 +11,7 @@
 		in
 			if isNull mod
 			then key
-			else key // { ${layer} = "MT(${mods.${mod}}, ${key.${layer}})"; }
+			else "MT(${mods.${mod}}, ${key})"
 		;
 
 		modtap_row = layer: r: mods:
@@ -25,7 +25,7 @@
 				in
 					if (row != r)
 					then key
-					else modtap layer mod key
+					else helpers.mapLayer layer (modtap mod) key
 			)
 		;
 	};

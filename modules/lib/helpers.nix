@@ -10,5 +10,7 @@
 			|> layout.map ({ key, ... }: "KC_${key}")
 			|> mkLayer
 		;
+
+		mapLayer = layer: f: key: key // { ${layer} = f key.${layer}; };
 	};
 }
