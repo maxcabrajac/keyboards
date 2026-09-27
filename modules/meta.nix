@@ -19,11 +19,18 @@
 		imports = keyModules;
 		freeformType = t.attrsOf t.str;
 	};
+	flakeConfig = config;
 in {
 	options = {
+		submodules = lib.mkOption {
+			type = t.deferredModuleWith {};
+			default = {};
+		};
+
 		parts = lib.mkOption {
 			type = t.attrsOf <| t.anything;
 		};
+
 		keyboards = lib.mkOption {
 			type = t.attrsOf <| t.submodule ({ config, ... }: {
 				options = {
@@ -42,6 +49,15 @@ in {
 
 					keymap = lib.mkOption {
 						type = layout.Of <| t.nullOr layeredKey;
+					};
+
+					submodule = lib.mkOption {
+						type = t.deferredModuleWith {};
+					};
+
+					evaluated = lib.mkOption {
+						type = t.anything;
+						readOnly = true;
 					};
 				};
 
@@ -63,7 +79,26 @@ in {
 							|> layout.mergeL (a: b: lib.mkMerge [ a b ])
 						)
 					;
+
 					keymap = config.layouter config.finalParts;
+
+					submodule = {
+						imports = config.keymap.values
+							|> lib.filter (x: !isNull x)
+							|> lib.map (x: x._m)
+						;
+
+						options.keymap = lib.mkOption {
+							type = t.anything;
+							readOnly = true;
+						};
+
+						config = { inherit (config) keymap; };
+					};
+
+					evaluated = (lib.evalModules {
+						modules = [ config.submodule flakeConfig.submodules ];
+					}).config;
 				};
 			});
 		};
