@@ -66,10 +66,31 @@ in {
 			values = lib.flatten (lib.zipListsWith (l: r: [ l r ]) (toNestedArray left) (toNestedArray right));
 		};
 
-		mergeWith = f: over: under: shortCircuitNulls over under <| assertSame "width" over under <| assertSame "height" over under {
-			inherit (over) width height;
-			values = lib.zipListsWith f over.values under.values;
+		unsized = value: {
+			_unsized = true;
+			inherit value;
 		};
+
+		mergeL = f: layouts: let
+			firstSized = layouts
+				|> lib.findFirst (x: x ? "width") null;
+			firstUnsized = layouts
+				|> lib.findFirst (x: x ? "__unsized") null;
+			sizeUnsizeds = lib.map (l: if l ? "__unsized" then map firstSized (_: l.value) else l);
+			simpleMerge = over: under: shortCircuitNulls over under <| assertSame "width" over under <| assertSame "height" over under {
+				inherit (over) width height;
+				values = lib.zipListsWith f over.values under.values;
+			};
+		in
+			if isNull firstSized
+			then firstUnsized
+			else layouts
+				|> sizeUnsizeds
+				|> lib.filter (x: !isNull x)
+				|> lib.foldl simpleMerge null
+		;
+
+		mergeWith = f: a: b: mergeL f [ a b ];
 
 		overlay = mergeWith (o: u: if isNull o then u else o);
 
