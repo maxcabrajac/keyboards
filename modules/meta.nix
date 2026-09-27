@@ -61,15 +61,15 @@ in {
 					};
 				};
 
-				config = {
-					finalParts = let
-						layers = config.parts
-							|> lib.attrValues
-							|> map lib.attrNames
-							|> lib.flatten
-							|> lib.uniqueStrings
-						;
-					in config.parts
+				config = let
+					layers = config.parts
+						|> lib.attrValues
+						|> map lib.attrNames
+						|> lib.flatten
+						|> lib.uniqueStrings
+					;
+				in {
+					finalParts = config.parts
 						|> lib.mapAttrs (_: part:
 							part
 							|> lib.mapAttrs (layer: layout.map ({ key, ... }: removeAttrs key [ "key" ] // { ${layer} = key.key;} ))
@@ -88,12 +88,15 @@ in {
 							|> lib.map (x: x._m)
 						;
 
-						options.keymap = lib.mkOption {
+						options = lib.genAttrs [ "keymap" "layers" ] (_: lib.mkOption {
 							type = t.anything;
 							readOnly = true;
-						};
+						});
 
-						config = { inherit (config) keymap; };
+						config = {
+							inherit (config) keymap;
+							inherit layers;
+						};
 					};
 
 					evaluated = (lib.evalModules {
