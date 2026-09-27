@@ -15,11 +15,23 @@ in {
 			type = t.attrsOf <| t.anything;
 		};
 		keyboards = lib.mkOption {
-			type = t.attrsOf <| t.submodule {
-				options.keymap = lib.mkOption {
-					type = layout.Of key;
+			type = t.attrsOf <| t.submodule ({ config, ... }: {
+				options = {
+					parts = lib.mkOption {
+						type = t.attrsOf <| t.attrsOf <| t.functionTo key;
+					};
+
+					layouter = lib.mkOption {
+						type = t.functionTo <| layout.Of key;
+					};
+
+					keymap = lib.mkOption {
+						type = layout.Of key;
+					};
 				};
-			};
+
+				config.keymap = config.layouter config.parts;
+			});
 		};
 	};
 
