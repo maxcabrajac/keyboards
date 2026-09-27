@@ -1,4 +1,4 @@
-{ layout, lib, helpers, ... }: {
+{ layout, lib, ... }: {
 	parts = rec {
 		modtap = mod: key: let
 			mods = {
@@ -14,7 +14,7 @@
 			else "MT(${mods.${mod}}, ${key})"
 		;
 
-		modtap_row = layer: r: mods:
+		modtap_row = r: mods:
 			layout.map ({ key, row, column, width, ... }:
 				 let
 					handIndex = lib.min column (width - column - 1);
@@ -25,7 +25,7 @@
 				in
 					if (row != r)
 					then key
-					else helpers.mapLayer layer (modtap mod) key
+					else modtap mod key
 			)
 		;
 	};

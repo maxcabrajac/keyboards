@@ -76,7 +76,11 @@ in {
 				|> lib.findFirst (x: x ? "width") null;
 			firstUnsized = layouts
 				|> lib.findFirst (x: x ? "__unsized") null;
-			sizeUnsizeds = lib.map (l: if l ? "__unsized" then map firstSized (_: l.value) else l);
+			sizeUnsizeds = l:
+				if l ? "_unsized"
+				then map (_: l.value) firstSized
+				else l
+			;
 			simpleMerge = over: under: shortCircuitNulls over under <| assertSame "width" over under <| assertSame "height" over under {
 				inherit (over) width height;
 				values = lib.zipListsWith f over.values under.values;
@@ -85,7 +89,7 @@ in {
 			if isNull firstSized
 			then firstUnsized
 			else layouts
-				|> sizeUnsizeds
+				|> lib.map sizeUnsizeds
 				|> lib.filter (x: !isNull x)
 				|> lib.foldl simpleMerge null
 		;
