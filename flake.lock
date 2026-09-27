@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "dag": {
+      "locked": {
+        "lastModified": 1786636402,
+        "narHash": "sha256-RI2Elc4c9SZt11z10bUeNirFF20vH0cAkIyLfr38Bjw=",
+        "owner": "denful",
+        "repo": "dag",
+        "rev": "81620ad3bcc943a4ac140d52b09812de8fea4394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "dag",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -123,6 +138,7 @@
     },
     "root": {
       "inputs": {
+        "dag": "dag",
         "flake-parts": "flake-parts",
         "import-tree": "import-tree",
         "nixcaps": "nixcaps",
