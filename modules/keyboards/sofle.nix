@@ -1,8 +1,8 @@
 { lib, layout, helpers, config, ... }: let
 	l = layout;
 in {
-	keyboards.sofle = {
-		parts = config.keyboards.generic.parts // {
+	keyboards.sofle = lib.mkMerge [ config.keyboards.generic {
+		parts = {
 			leftBigThumb.qwerty = l.unit "KC_NO";
 			leftHiddenThumb.qwerty = l.unit "KC_NO";
 			leftKnob.qwerty = helpers.mkSimpleLayer [[ "NO" "NO" "NO" ]];
@@ -12,7 +12,7 @@ in {
 			rightKnob.qwerty = helpers.mkSimpleLayer [[ "NO" "NO" "NO" ]];
 		};
 
-		layouter = p: let
+		layouter = lib.mkForce (p: let
 			ommit = l.unit null;
 			concatAll = lib.foldr l.concat null;
 			stackAll = lib.foldr l.stack null;
@@ -42,6 +42,6 @@ in {
 			;
 		in
 			concatAll [ hands.left knobs hands.right ]
-		;
-	};
+		);
+	}];
 }
