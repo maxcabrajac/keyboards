@@ -84,12 +84,13 @@ in {
 					|> lib.map (x: x._m)
 				;
 
-				options = lib.genAttrs [ "keymap" "layers" ] (_: lib.mkOption {
+				options = lib.genAttrs [ "keymap" "usedLayers" ] (_: lib.mkOption {
 					type = t.anything;
 				});
 
 				config = {
-					inherit keymap layers;
+					inherit keymap;
+					usedLayers = layers;
 				};
 			};
 		in

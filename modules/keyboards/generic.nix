@@ -1,4 +1,4 @@
-{ layout, helpers, config, ... }: let
+{ layout, helpers, config, dag, ... }: let
 	p = config.parts;
 in {
 	keyboards.generic = {
@@ -40,6 +40,10 @@ in {
 				(p.layerHold "numbers")
 				"KC_NO"
 			];
+		};
+
+		submodule = {
+			layers.qwerty = dag.entryBefore [ "defaultLayers" ] true;
 		};
 
 		# This is not a real keyboard just an IR-keyboard
