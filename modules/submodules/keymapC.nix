@@ -12,4 +12,6 @@
 			after = [ "${sec}End" ];
 		}) { acc = {}; after = []; }
 	|> (x: x.acc);
+
+	_module.args.entryAt = x: dag.entryBetween [ "${x}End" ] [ "${x}Start" ];
 }

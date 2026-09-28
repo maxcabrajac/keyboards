@@ -1,7 +1,5 @@
-{ lib, layout, helpers, config, ... }: let
+{ layout, helpers, config, ... }: let
 	p = config.parts;
-	# TODO: move this somewhere else
-	goToLayer = x: "MO(LAYER_${x})";
 in {
 	keyboards.generic = {
 		parts = {
@@ -15,7 +13,7 @@ in {
 			};
 			rightThumb = {
 				qwerty = layout.matrix [
-					[ "KC_ENT" (config.parts.modtap "G" "KC_SPC") "KC_UNDS" ]
+					[ "KC_ENT" (p.modtap "G" "KC_SPC") "KC_UNDS" ]
 				];
 				numbers = helpers.mkSimpleLayer [
 					[ "PLUS" "TRANSPARENT" "MINS" ]
@@ -34,12 +32,12 @@ in {
 			];
 			leftSide.qwerty = layout.column [
 				"KC_GRV"
-				(goToLayer "qwerty")
+				(p.layerHold "numbers")
 				"KC_NO"
 			];
 			rightSide.qwerty = layout.column [
 				"KC_QUOT"
-				(goToLayer "qwerty")
+				(p.layerHold "numbers")
 				"KC_NO"
 			];
 		};
