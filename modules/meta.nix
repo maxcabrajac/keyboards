@@ -31,7 +31,7 @@ in {
 		};
 
 		keyboards = lib.mkOption {
-			type = t.lazyAttrsOf <| t.submodule ({
+			type = t.lazyAttrsOf <| t.submodule {
 				options = {
 					parts = lib.mkOption {
 						type = t.attrsOf <| t.attrsOf <| layout.Of <| t.coercedTo t.str (key: { inherit key; }) key;
@@ -46,7 +46,7 @@ in {
 						default = {};
 					};
 				};
-			});
+			};
 		};
 
 		evaluatedKeyboards = lib.mkOption {
@@ -56,7 +56,7 @@ in {
 	};
 
 	config = {
-		evaluatedKeyboards = config.keyboards |> lib.mapAttrs (_: kb: let
+		evaluatedKeyboards = config.keyboards |> lib.mapAttrs (name: kb: let
 			layers = kb.parts
 				|> lib.attrValues
 				|> map lib.attrNames
@@ -84,12 +84,12 @@ in {
 					|> lib.map (x: x._m)
 				;
 
-				options = lib.genAttrs [ "keymap" "usedLayers" ] (_: lib.mkOption {
+				options = lib.genAttrs [ "keymap" "usedLayers" "name" ] (_: lib.mkOption {
 					type = t.anything;
 				});
 
 				config = {
-					inherit keymap;
+					inherit keymap name;
 					usedLayers = layers;
 				};
 			};
