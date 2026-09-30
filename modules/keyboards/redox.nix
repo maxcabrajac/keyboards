@@ -32,15 +32,11 @@ in {
 
 		# TODO: Move these somewhere else
 		submodule = {
-			files."config.h".all = ''
-				#pragma once
-				#define SPLIT_USB_DETECT
-				#define SPLIT_USB_TIMEOUT 10000
-				#define MASTER_LEFT
-
-				#define TAPPING_TERM 200
-				#define PERMISSIVE_HOLD
-			'';
+			settings = {
+				SPLIT_USB_DETECT = "";
+				SPLIT_USB_TIMEOUT = "10000";
+				MASTER_LEFT = "";
+			};
 			rules = {
 				RGBLIGHT_ENABLE = false;
 				AUDIO_ENABLE = false;

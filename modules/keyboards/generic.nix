@@ -80,6 +80,11 @@ in {
 				# ; is colemak's O so we add it
 				"KC_SCLN"
 			];
+
+			settings = {
+				TAPPING_TERM = "200";
+				PERMISSIVE_HOLD = "";
+			};
 		};
 
 		# This is not a real keyboard just an IR-keyboard
