@@ -42,7 +42,7 @@ in {
 			(asLayer "navigation" {
 				center = let x = "KC_NO"; in layout.matrix [
 					[ x         "MS_UP"   x         "MS_WHLU" x x         x         x       x          x ]
-					[ "MS_LEFT" "MS_DOWN" "MS_LEFT" "MS_WHLD" x "KC_LEFT" "KC_DOWN" "KC_UP" "KC_RIGHT" x ]
+					[ "MS_LEFT" "MS_DOWN" "MS_RGHT" "MS_WHLD" x "KC_LEFT" "KC_DOWN" "KC_UP" "KC_RIGHT" x ]
 					[ x         x         x         x         x x         x         x       x          x ]
 				];
 				leftThumb = layout.row [ "KC_NO" "MS_BTN1" "MS_BTN2" ];
