@@ -85,6 +85,11 @@ in {
 				TAPPING_TERM = "200";
 				PERMISSIVE_HOLD = "";
 			};
+
+			rules = {
+				AUDIO_ENABLE = false;
+				COMMAND_ENABLE = false;
+			};
 		};
 
 		# This is not a real keyboard just an IR-keyboard

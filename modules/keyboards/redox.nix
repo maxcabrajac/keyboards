@@ -30,18 +30,13 @@ in {
 			};
 		};
 
-		# TODO: Move these somewhere else
 		submodule = {
 			settings = {
 				SPLIT_USB_DETECT = "";
 				SPLIT_USB_TIMEOUT = "10000";
 				MASTER_LEFT = "";
 			};
-			rules = {
-				RGBLIGHT_ENABLE = false;
-				AUDIO_ENABLE = false;
-				COMMAND_ENABLE = false;
-			};
+			rules.RGBLIGHT_ENABLE = false;
 		};
 
 		layouter = lib.mkForce (p: let
