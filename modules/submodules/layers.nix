@@ -1,4 +1,4 @@
-{ lib, config, entryAt, dag, ... }: let
+{ lib, config, dag, ... }: let
 	fConfig = config;
 in {
 	submodules = { config, ... }: {
@@ -21,10 +21,9 @@ in {
 				}
 			];
 
-			files."keymap.c".layerEnum = config.layers
+			enums.layers = config.layers
 				|> map fConfig.parts.layerVar
-				|> lib.concatStringsSep ", "
-				|> (x: entryAt "definitions" ''enum layers { ${x} };'');
+			;
 		};
 	};
 
