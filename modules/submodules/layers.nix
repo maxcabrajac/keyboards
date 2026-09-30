@@ -29,7 +29,7 @@ in {
 
 	parts = {
 		layerVar = x: "LAYER_${x}";
-		layerHold = x: "TO(${config.parts.layerVar x})";
+		layerHold = x: "MO(${config.parts.layerVar x})";
 		layerToggle = x: "TG(${config.parts.layerVar x})";
 	};
 }
