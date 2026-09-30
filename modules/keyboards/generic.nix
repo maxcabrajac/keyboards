@@ -10,6 +10,11 @@ in {
 					[ "LPRN" "DLR"  "PERC" "CIRC" "RPRN" "EQL"  "4" "5" "6" "0"    ]
 					[ "LBRC" "EXLM" "AT"   "HASH" "RBRC" "PIPE" "1" "2" "3" "BSLS" ]
 				];
+				navigation = let x = "KC_NO"; in layout.matrix [
+					[ x         "MS_UP"   x         "MS_WHLU" x x         x         x       x          x ]
+					[ "MS_LEFT" "MS_DOWN" "MS_LEFT" "MS_WHLD" x "KC_LEFT" "KC_DOWN" "KC_UP" "KC_RIGHT" x ]
+					[ x         x         x         x         x x         x         x       x          x ]
+				];
 			};
 			rightThumb = {
 				qwerty = layout.matrix [
@@ -33,12 +38,12 @@ in {
 			leftSide.qwerty = layout.column [
 				"KC_GRV"
 				(p.layerOrCapsword "numbers")
-				"KC_NO"
+				(p.layerHold "navigation")
 			];
 			rightSide.qwerty = layout.column [
 				"KC_QUOT"
 				(p.layerOrCapsword "numbers")
-				"KC_NO"
+				(p.layerHold "navigation")
 			];
 		};
 
