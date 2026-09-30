@@ -63,6 +63,20 @@ in {
 				|> lib.concatLines
 				|> entryAt "code"
 			;
+
+			functions = {
+				default_layer_state_set_user = {
+					arguments = [ "layer_state_t state" ];
+					returnType = "layer_state_t";
+					defaultReturn = "state";
+				};
+
+				process_record_user = {
+					arguments = [ "uint16_t keycode" "keyrecord_t *record" ];
+					returnType = "bool";
+					defaultReturn = "true";
+				};
+			};
 		};
 	};
 }

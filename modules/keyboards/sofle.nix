@@ -1,5 +1,6 @@
 { lib, layout, helpers, config, ... }: let
 	l = layout;
+	p = config.parts;
 in {
 	keyboards.sofle = lib.mkMerge [ config.keyboards.generic {
 		parts = {
@@ -8,7 +9,7 @@ in {
 			leftKnob.qwerty = helpers.mkSimpleLayer [[ "NO" "NO" "NO" ]];
 
 			rightBigThumb.qwerty = l.unit "KC_NO";
-			rightHiddenThumb.qwerty = l.unit "KC_NO";
+			rightHiddenThumb.qwerty = l.unit p.layerStash;
 			rightKnob.qwerty = helpers.mkSimpleLayer [[ "NO" "NO" "NO" ]];
 		};
 
