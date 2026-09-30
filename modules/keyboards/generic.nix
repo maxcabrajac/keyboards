@@ -32,18 +32,24 @@ in {
 			];
 			leftSide.qwerty = layout.column [
 				"KC_GRV"
-				(p.layerHold "numbers")
+				(p.layerOrCapsword "numbers")
 				"KC_NO"
 			];
 			rightSide.qwerty = layout.column [
 				"KC_QUOT"
-				(p.layerHold "numbers")
+				(p.layerOrCapsword "numbers")
 				"KC_NO"
 			];
 		};
 
 		submodule = {
 			layers.qwerty = dag.entryBefore [ "defaultLayers" ] true;
+			capsword.shifted = [
+				# P is colemak's ; so we ommit it
+				"KC_A ... KC_O" /* KC_P */ "KC_Q ... KC_Z"
+				# ; is colemak's O so we add it
+				"KC_SCLN"
+			];
 		};
 
 		# This is not a real keyboard just an IR-keyboard
