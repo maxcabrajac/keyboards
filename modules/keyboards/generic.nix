@@ -12,9 +12,6 @@ in {
 				rightThumb = layout.matrix [
 					[ "KC_ENT" (p.modtap "G" "KC_SPC") "KC_UNDS" ]
 				];
-				numberRow = helpers.mkSimpleLayer [
-					[ "NO" "NO" "NO" "NO" "NO" "NO" "LEFT" "DOWN" "UP" "RIGHT" "NO" "PSCR" ]
-				];
 				leftThumb = helpers.mkSimpleLayer [
 					[ "TAB" "BSPC" "ESC" ]
 				];
@@ -48,6 +45,29 @@ in {
 					[ "MS_LEFT" "MS_DOWN" "MS_LEFT" "MS_WHLD" x "KC_LEFT" "KC_DOWN" "KC_UP" "KC_RIGHT" x ]
 					[ x         x         x         x         x x         x         x       x          x ]
 				];
+			})
+			# WARN: generic gaming layer does *not* have access to ALT or ESC
+			#       they MUST be added by keyboard specific configuration
+			(asLayer "gaming" ({
+				inherit (p) numberRow;
+				center = p.qwerty |> p.emulatedOn p.colemak;
+			} |> lib.mapAttrs (_: x: x
+				|> layout.splitHands
+				|> ({ left, right }: layout.concat left (right |> layout.map (_: p.layerToggle "gaming")))
+			)))
+			(asLayer "gaming" {
+				# INFO: J and I are here for retrocompatibility reasons.
+				# TODO: Change J and I for less random keys
+				leftThumb = helpers.mkSimpleLayer [
+					[ "LCTL" "SPC" "J" ]
+				];
+				leftSide = helpers.mkSimpleLayer [
+					[ "TAB" ]
+					[ "I" ]
+					[ "LSFT" ]
+				];
+				rightThumb = layout.row <| lib.genList (_: p.layerToggle "gaming") 3;
+				rightSide = layout.column <| lib.genList (_: p.layerToggle "gaming") 3;
 			})
 		];
 
