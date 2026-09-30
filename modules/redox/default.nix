@@ -1,6 +1,6 @@
 {
 	perSystem = { mkKeyboard, ... }: {
-		packages.redox =  mkKeyboard {
+		apps.redox-legacy =  mkKeyboard {
 			src = ./src;
 			keyboard = "redox";
 			variant = "rev1";
