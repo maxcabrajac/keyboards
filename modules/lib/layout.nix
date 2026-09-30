@@ -104,6 +104,7 @@ in {
 				inherit (l) width height;
 				row = i / width;
 				column = i - (row * width);
+				rawPosition = i;
 			}) l.values;
 		};
 
