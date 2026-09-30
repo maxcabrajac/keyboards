@@ -1,6 +1,7 @@
 { config, ... }: {
 	parts.layerOrCapsword = layer: let
 		key = "CKC_LAYER_OR_CAPSWORD_${layer}";
+		layerVar = config.parts.layerVar layer;
 	in {
 		_m = {
 			inherit key;
@@ -13,12 +14,15 @@
 						if (record->event.pressed) {
 							held++;
 							if (held == 1) {
-								layer_on(${config.parts.layerVar layer});
+								layer_on(${layerVar});
 							} else if (held == 2) {
 								caps_word_toggle();
 							}
 						} else {
 							held--;
+							if (held == 0) {
+								layer_off(${layerVar});
+							}
 						}
 						return false;
 					}
