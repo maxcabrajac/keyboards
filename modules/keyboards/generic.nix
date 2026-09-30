@@ -45,6 +45,7 @@ in {
 					[ "MS_LEFT" "MS_DOWN" "MS_LEFT" "MS_WHLD" x "KC_LEFT" "KC_DOWN" "KC_UP" "KC_RIGHT" x ]
 					[ x         x         x         x         x x         x         x       x          x ]
 				];
+				leftThumb = layout.row [ "KC_NO" "MS_BTN1" "MS_BTN2" ];
 			})
 			# WARN: generic gaming layer does *not* have access to ALT or ESC
 			#       they MUST be added by keyboard specific configuration
