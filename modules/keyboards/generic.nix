@@ -93,6 +93,6 @@ in {
 		};
 
 		# This is not a real keyboard just an IR-keyboard
-		layouter = _: layout.unit { layer = "KC_NO"; };
+		layouter = _: {};
 	};
 }

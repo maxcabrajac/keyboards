@@ -1,8 +1,14 @@
 { lib, layout, entryAt, config, ... }: let
 	p = config.parts;
+	t = lib.types;
 in {
 	submodules = { config, ... }: {
-		files."keymap.c".keymap = let
+		options.keymap = lib.mkOption {
+			type = layout.Of <| t.nullOr <| t.attrsOf t.str;
+			default = config.layouterOutput.keymap;
+		};
+
+		config.files."keymap.c".keymap = let
 			asArray = layout.toNestedArray config.keymap;
 			layoutFor = layer:
 				asArray

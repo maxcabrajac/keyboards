@@ -1,21 +1,33 @@
-{ lib, config, dag, ... }: let
+{ lib, config, dag, layout, ... }: let
 	fConfig = config;
 in {
-	submodules = { config, ... }: {
-		options.layers = lib.mkOption {
-			type = dag.of lib.types.bool;
-			apply = d: d
-				|> dag.topoSort
-				|> (x: lib.throwIfNot (x ? "result") "Failed to sort layers: ${toString x}" x.result)
-				|> lib.filter (x: x.data)
-				|> map (x: x.name)
-				|> lib.filter (x: lib.elem x config.usedLayers)
-			;
+	submodules = { config, ... }: let
+		usedLayers = config.layouterOutput
+			|> lib.attrValues
+			|> map layout.toNestedArray
+			|> lib.flatten
+			|> lib.filter (x: !isNull x)
+			|> map lib.attrNames
+			|> lib.flatten
+			|> lib.uniqueStrings
+		;
+	in {
+		options = {
+			layers = lib.mkOption {
+				type = dag.of lib.types.bool;
+				apply = d: d
+					|> dag.topoSort
+					|> (x: lib.throwIfNot (x ? "result") "Failed to sort layers: ${toString x}" x.result)
+					|> lib.filter (x: x.data)
+					|> map (x: x.name)
+					|> lib.filter (x: lib.elem x usedLayers)
+				;
+			};
 		};
 
 		config = {
 			layers = lib.mkMerge [
-				(lib.genAttrs config.usedLayers (_: true))
+				(lib.genAttrs usedLayers (_: true))
 				{
 					defaultLayers = false;
 				}

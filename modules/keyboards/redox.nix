@@ -74,7 +74,7 @@ in {
 
 			cc = concatAll [ ccUpper.left ccLower ccUpper.right ];
 		in
-			concatAll [ nonCenterColumns.left cc nonCenterColumns.right ]
+			{ keymap = concatAll [ nonCenterColumns.left cc nonCenterColumns.right ]; }
 		);
 	}];
 }

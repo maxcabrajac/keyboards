@@ -42,7 +42,7 @@ in {
 				|> concatAll
 			;
 		in
-			concatAll [ hands.left knobs hands.right ]
+			{ keymap = concatAll [ hands.left knobs hands.right ]; }
 		);
 	}];
 }
