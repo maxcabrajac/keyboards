@@ -10,7 +10,7 @@ in {
 
 			rightBigThumb.qwerty = l.unit "KC_NO";
 			rightHiddenThumb.qwerty = l.unit p.layerStash;
-			rightKnob.qwerty = helpers.mkSimpleLayer [[ "NO" "NO" "NO" ]];
+			rightKnob.qwerty = helpers.mkSimpleLayer [[ "VOLD" "MUTE" "VOLU" ]];
 		};
 
 		layouter = lib.mkForce (p: let
@@ -34,15 +34,29 @@ in {
 				knob
 				ommit
 			];
-			# TODO: Set knob rotation
-			# TODO: Move this somewhere else
+
+			# TODO: Move these somewhere else (?)
+			getKnobClick = knob: l.unit <| lib.elemAt knob.values 1;
+			# INFO: For now only the right knob is installed and it's inverted.
+			# TODO: Check if the left knob is also inverted
+			getKnobRotations = knob: [ 2 0 ]
+				|> map (lib.elemAt knob.values)
+				|> layout.row
+			;
+
 			knobs = [ p.leftKnob p.rightKnob ]
-				|> map (x: l.unit (lib.elemAt x.values 1))
+				|> map getKnobClick
 				|> map knobColumn
 				|> concatAll
 			;
-		in
-			{ keymap = concatAll [ hands.left knobs hands.right ]; }
-		);
+		in {
+			keymap = concatAll [ hands.left knobs hands.right ];
+			leftKnob = getKnobRotations p.leftKnob;
+			rightKnob = getKnobRotations p.rightKnob;
+		});
+
+		submodule = { config, ... }: {
+			knobs = with config.layouterOutput; [ leftKnob rightKnob ];
+		};
 	}];
 }
