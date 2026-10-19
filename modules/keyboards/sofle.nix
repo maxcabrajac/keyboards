@@ -5,7 +5,7 @@ in {
 	keyboards.sofle = lib.mkMerge [ config.keyboards.generic {
 		parts = {
 			leftBigThumb.qwerty = l.unit "KC_NO";
-			leftHiddenThumb.qwerty = l.unit "KC_NO";
+			leftHiddenThumb.qwerty = l.unit <| p.layerToggle "gaming";
 			leftKnob.qwerty = helpers.mkSimpleLayer [[ "NO" "NO" "NO" ]];
 
 			rightBigThumb.qwerty = l.unit "KC_NO";
