@@ -6,7 +6,8 @@ in {
 		parts = lib.mkMerge [
 			(asLayer "qwerty" {
 				numberRow = helpers.mkSimpleLayer [
-					[ "NO" "NO" "NO" "NO" "NO" "NO" "LEFT" "DOWN" "UP" "RIGHT" "NO" "PSCR" ]
+					# TODO: extract hanabi numberRow into a part
+					[ "NO" "NO" "NO" "NO" "NO" "NO" "LEFT" "DOWN" "UP" "RIGHT" "SPC" "PSCR" ]
 				];
 				center = p.qwerty |> p.modtap_row 2 [ "S" "C" "A" "M" ];
 				rightThumb = layout.matrix [
